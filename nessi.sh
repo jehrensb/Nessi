@@ -1,4 +1,6 @@
 #! /bin/sh
 export PYTHONPATH=./$PYTHONPATH
 
-python nessi/simcon.py
+cd nessi/
+
+python simcon.py

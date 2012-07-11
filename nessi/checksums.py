@@ -1,5 +1,5 @@
 # Nessi Network Simulator
-#                                                                        
+#
 # Authors:  Juergen Ehrensberger; IICT HEIG-VD
 # Creation: October 2003
 #
@@ -40,7 +40,7 @@ class ChksumSource(TrafficSource):
     """Sends a fixed sized packet to lower layers at periodic intervals."""
 
     chksumFun = None # Function to compute the checksum of a packet
-    
+
     def __init__(self, interval=0.001, length=128):
         self.interval = interval
         self.length = length/8 # in octets
@@ -98,16 +98,16 @@ class ChksumSink(TrafficSink):
         # Initialize the statistics
         # Dictionary: Error burst length --> How often detected
         self.burstsDetected = {}
-        
+
         # Dictionary: Error burst length --> How often undetected
         self.burstsUndetected = {}
 
-        # Dictionary: Number of wrong bits in packet --> How often detected  
+        # Dictionary: Number of wrong bits in packet --> How often detected
         self.bitErrorsDetected = {}
 
-        # Dictionary: Number of wrong bits in packet --> How often undetected  
+        # Dictionary: Number of wrong bits in packet --> How often undetected
         self.bitErrorsUndetected = {}
-        
+
     def useChksum(self,verifyChksumFun):
         """Set the function to verify the checksum of a packet.
 
@@ -129,8 +129,8 @@ class ChksumSink(TrafficSink):
 
         # Convert the strings into array of unsigned 8 bit integers
         # and compute the XOR between the arrays to find the bytes that differ
-        goodbytes=numpy.fromstring(self.goodData,numpy.UnsignedInt8)
-        badbytes=numpy.fromstring(self.badData,numpy.UnsignedInt8)
+        goodbytes=numpy.fromstring(self.goodData,numpy.uint8)
+        badbytes=numpy.fromstring(self.badData,numpy.uint8)
         diff = numpy.bitwise_xor(goodbytes,badbytes)
 
         # Convert the diff bytes into an array of bits,
@@ -138,7 +138,7 @@ class ChksumSink(TrafficSink):
         diffbits = numpy.bitwise_and.outer(diff,self.bitmasks).flat
 
         # Get the indices of all error bits
-        errorbits = numpy.nonzero(diffbits)
+        errorbits = numpy.nonzero(diffbits)[0]
 
         # Compute the statistics
         numErrors = len(errorbits)
@@ -147,18 +147,18 @@ class ChksumSink(TrafficSink):
             if correct:
                 # Undetected bit errors !!!
                 self.bitErrorsUndetected[numErrors] = (
-                    self.bitErrorsUndetected.get(numErrors,0)+1) 
+                    self.bitErrorsUndetected.get(numErrors,0)+1)
                 self.burstsUndetected[burstlength] = (
                     self.burstsUndetected.get(burstlength,0)+1)
             else:
                 # Errors have been detected
                 self.bitErrorsDetected[numErrors] = (
-                    self.bitErrorsDetected.get(numErrors,0)+1) 
+                    self.bitErrorsDetected.get(numErrors,0)+1)
                 self.burstsDetected[burstlength] = (
                     self.burstsDetected.get(burstlength,0)+1)
 
         self.goodData = self.badData = None
-        
+
 # ---------------------------------------------------------------------------
 
 def IPChksum(data):
@@ -220,9 +220,9 @@ def polynomialChksum(data,polynomial=[1,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,1,
     Return value:
       checksum:String -- String of 4 octets of the checksum, highest bit first.
     """
-    
+
     bitmask = numpy.array([128,64,32,16,8,4,2,1])
-    bytes=numpy.fromstring(data,numpy.UnsignedInt8)
+    bytes=numpy.fromstring(data,numpy.uint8)
     bits=numpy.bitwise_and.outer(bytes,bitmask).flat
     numpy.putmask(bits,bits,1)
     u=list(bits)+([0]*(len(polynomial)-1))
@@ -257,7 +257,7 @@ def checkPolynomialChksum(packet,polynomial=[1,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,1,
     origChksum = packet[-chksumlen:]
     correct = ( polynomialChksum(data,polynomial)==origChksum )
     return (data,correct)
-    
+
 def dividePolynomial(u,v):
     """Division of polynomial modulo 2
 
@@ -304,8 +304,8 @@ def parityChksum(data):
     Since we cannot return a single bit, the bit is encoded as an octet
     and the octet is taken as a character (e.g. character \x00 or \x01.
     """
-    bitmask = numpy.array([128,64,32,16,8,4,2,1],numpy.UnsignedInt8)
-    bytes=numpy.fromstring(data,numpy.UnsignedInt8)
+    bitmask = numpy.array([128,64,32,16,8,4,2,1],numpy.uint8)
+    bytes=numpy.fromstring(data,numpy.uint8)
     bits=numpy.bitwise_and.outer(bytes,bitmask).flat
     count = len(numpy.nonzero(bits))
     checksumstring = chr(count%2)
@@ -338,12 +338,12 @@ def doubleParityChksum(data):
     of the checksum.
     """
     bitmask = numpy.array([128,64,32,16,8,4,2,1])
-    bytes = numpy.fromstring(data,numpy.UnsignedInt8)
+    bytes = numpy.fromstring(data,numpy.uint8)
     numBytes = len(bytes)
     bits = numpy.bitwise_and.outer(bytes,bitmask).flat
     numpy.putmask(bits,bits,1)
     bits = numpy.reshape(bits, (numBytes,8))
- 
+
     verParities = numpy.bitwise_and(numpy.sum(bits),1)
     bits = numpy.concatenate((bits,[verParities]))
 
@@ -382,7 +382,7 @@ def checkDoubleParityChksum(packet):
     correct = ( doubleParityChksum(data)==origChksum )
     return (data,correct)
 
-    
+
 # Helper functions to test the checksum functions
 def binary(z):
     """Returns a string with the binary representation of z.

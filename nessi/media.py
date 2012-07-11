@@ -324,7 +324,7 @@ class ErrorMedium(Medium):
         errors are correlated.
         """
         errorbits = self._errorbits(data)
-        dataarray = numpy.fromstring(data,numpy.UnsignedInt8)
+        dataarray = numpy.fromstring(data,numpy.uint8)
         bitmask = (128,64,32,16,8,4,2,1)
         for pos in errorbits:
             byte = pos>>3 # Divide by 8
