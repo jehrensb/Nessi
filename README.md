@@ -5,24 +5,31 @@ Nessi is a network simulator for computer network. It is designed to simplify an
 Nessi is licensed under GPL version 2.
 
 
+Current status
+==============
+
+*The current version of Nessi is out-of-date and is currently being updated.*
+
+* July 30, 2012: Nessi runs on recent Python versions. Can run the simulations in the Examples folder. Plot Window not yet working.
+
 Installation instructions
 =========================
-*The current version of Nessi is out-of-date won't run on a recent platform. It will be updated in the next time.*
-
 Nessi is multi-platform and runs on Linux, Windows and Mac OS X.
-It requires the following runtime environment:
 
-Python 2.4 (Python 2.5 with wxPython has not been tested yet).
-psyco : acceleration module for Python.
-wxPython (for Python 2.4): graphical user interface.
-NumPy , Scipy (includes NumPy), or the older Numerical Python (all for Python 2.4): numerical library.
-Matplotlib : plotting library.
+Linux
+-----
+You will require:
+
+* Python 2.7 or higher
+* python-wxgtk2.8 or higher
+* python-matplotlib 1.1.1rc or higher
 
 
 Contact information
 ===================
 Juergen Ehrensberger
-School of Business and Engineering, Vaud (HEIG-VD)
-University of Applied Scienced of Western Switzerland (HES-SO)
 
+School of Business and Engineering, Vaud (HEIG-VD)
+
+http://www.heig-vd.ch
 
