@@ -16,8 +16,8 @@ Installation instructions
 =========================
 Nessi is multi-platform and runs on Linux, Windows and Mac OS X.
 
-Linux
------
+### Linux
+
 You will require:
 
 * Python 2.7 or higher
