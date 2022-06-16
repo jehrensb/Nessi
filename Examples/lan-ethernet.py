@@ -245,4 +245,4 @@ def interarr(interarrival):
 
 for h in hosts[1:]:
     h.app.start()
-RUN(100)
+    RUN(100)
