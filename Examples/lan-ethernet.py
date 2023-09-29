@@ -238,11 +238,11 @@ def interarr(interarrival):
         h.app.setInterarrival(interarrival)
     stats.resetStats()
     rate = len(hosts[1:]) * meanPDUSize * 8 / meanInterarrival
-    print "Total rate: ", rate, " bits/s"
+    print("Total rate: ", rate, " bits/s")
     
 # ===========================================================================
 # Run the simulation
 
 for h in hosts[1:]:
     h.app.start()
-RUN(100)
+    RUN(100)
